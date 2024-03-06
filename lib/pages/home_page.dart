@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo/components/appbar.dart';
 import 'package:flutter_todo/components/todo_dialog.dart';
 import 'package:flutter_todo/components/todo_tile.dart';
+import '../services/database.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,23 +13,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List todos = [
-    ["first", true],
-    ["second", false]
-  ];
+  final Database _database = Database();
   final TextEditingController controller = TextEditingController();
 
-  void modifyCheckBox(bool? value, int index) {
-    setState(() {
-      todos[index][1] = !todos[index][1];
-    });
+  void saveTask() {
+    _database.createTodo(controller.text, DateTime.now());
+    return Navigator.of(context).pop();
   }
 
-  void saveTask() {
-    setState(() {
-      todos.add([controller.text, false]);
-    });
-    return Navigator.of(context).pop();
+  void modifyCheckBox(bool? value, int index) {
+    _database.updateTodo(index);
+  }
+
+  void deleteTask(int index) {
+    _database.deleteTodo(index);
   }
 
   void cancelSave() {
@@ -40,28 +40,30 @@ class _HomePageState extends State<HomePage> {
         return TodoDialog(
           controller: controller,
           onCancel: cancelSave,
-          onSave: saveTask,);
+          onSave: saveTask
+        );
       }
     );
   }
 
   @override
+  void initState() {
+    _database.fetchData();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Tasks"),
-        centerTitle: true,
-        backgroundColor: Theme.of(context).primaryColor,
-        elevation: 0,
-        leading: const Icon(Icons.menu)
-      ),
+      appBar: const Appbar(),
       body: ListView.builder(
-        itemCount: todos.length,
+        itemCount: _database.data.length,
         itemBuilder: (content, index) {
           return TodoTile(
-            taskName: todos[index][0],
-            isComplete: todos[index][1],
+            taskName: _database.data[index].title,
+            isComplete: _database.data[index].isComplete,
             onchanged: (value) => modifyCheckBox(value, index),
+            deleteTask: (context) => deleteTask(index),
           );
         },
       ),
