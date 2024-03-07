@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/constants.dart';
+import 'package:flutter_todo/models.dart';
 import 'package:flutter_todo/pages/home_page.dart';
-import 'package:flutter_todo/services/models.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
   final dir = await getApplicationDocumentsDirectory();
   await Hive.initFlutter(dir.path);
-  Hive.registerAdapter('Bee', Bee.fromJson);
+  Hive.registerAdapter(TodoAdapter());
   await Hive.openBox<Todo>(dataStore);
+
   runApp(const MainApp());
 }
 

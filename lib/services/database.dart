@@ -1,5 +1,5 @@
 import 'package:flutter_todo/constants.dart';
-import 'package:flutter_todo/services/models.dart';
+import 'package:flutter_todo/models.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class Database {
