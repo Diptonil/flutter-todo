@@ -17,16 +17,23 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController controller = TextEditingController();
 
   void saveTask() {
-    _database.createTodo(controller.text, DateTime.now());
+    setState(() {
+      _database.createTodo(controller.text, DateTime.now());
+      controller.clear();
+    });
     return Navigator.of(context).pop();
   }
 
   void modifyCheckBox(bool? value, int index) {
-    _database.updateTodo(index);
+    setState(() {
+      _database.updateTodo(index);
+    });
   }
 
   void deleteTask(int index) {
-    _database.deleteTodo(index);
+    setState(() {
+      _database.deleteTodo(index);
+    });
   }
 
   void cancelSave() {
