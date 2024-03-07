@@ -4,7 +4,9 @@ import 'package:flutter_todo/services/database.dart';
 
 
 class Appbar extends StatefulWidget implements PreferredSizeWidget {
-  const Appbar({super.key});
+  final Database database;
+
+  const Appbar({super.key, required this.database});
 
   @override
   State<Appbar> createState() => _AppbarState();
@@ -15,12 +17,12 @@ class Appbar extends StatefulWidget implements PreferredSizeWidget {
 
 class _AppbarState extends State<Appbar> {
   void handleClick(String value) {
-    final Database database = Database();
-
     switch (value) {
       case "Clear All":
         setState(() {
-          database.deleteAllTodos();
+          widget.database.addListener(() {
+            widget.database.deleteAllTodos();
+          });
         });
         break;
       case "Close":

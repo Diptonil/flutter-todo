@@ -13,12 +13,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final Database _database = Database();
+  final Database database = Database();
   final TextEditingController controller = TextEditingController();
 
   void saveTask() {
     setState(() {
-      _database.createTodo(controller.text, DateTime.now());
+      database.createTodo(controller.text, DateTime.now());
       controller.clear();
     });
     return Navigator.of(context).pop();
@@ -26,13 +26,13 @@ class _HomePageState extends State<HomePage> {
 
   void modifyCheckBox(bool? value, int index) {
     setState(() {
-      _database.updateTodo(index);
+      database.updateTodo(index);
     });
   }
 
   void deleteTask(int index) {
     setState(() {
-      _database.deleteTodo(index);
+      database.deleteTodo(index);
     });
   }
 
@@ -55,20 +55,20 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    _database.fetchData();
+    database.fetchData();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const Appbar(),
+      appBar: Appbar(database: database),
       body: ListView.builder(
-        itemCount: _database.data.length,
+        itemCount: database.data.length,
         itemBuilder: (content, index) {
           return TodoTile(
-            taskName: _database.data[index].title,
-            isComplete: _database.data[index].isComplete,
+            taskName: database.data[index].title,
+            isComplete: database.data[index].isComplete,
             onchanged: (value) => modifyCheckBox(value, index),
             deleteTask: (context) => deleteTask(index),
           );

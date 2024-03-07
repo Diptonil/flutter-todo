@@ -1,19 +1,20 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_todo/constants.dart';
 import 'package:flutter_todo/models.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class Database {
+class Database extends ChangeNotifier {
   final _dataStore = Hive.box(dataStore);
   List<Todo> data = [];
 
   void fetchData() {
     List<dynamic> fetchedData = _dataStore.get(dataStoreKey) ?? [];
-    print(fetchedData);
-    data = fetchedData.map<Todo>((e) => Todo.fromJson(e)).toList();
+    data = List<Todo>.from(fetchedData);
   }
 
   void commitData() {
     _dataStore.put(dataStoreKey, data);
+    notifyListeners();
   }
 
   void createTodo(String title, DateTime dateTime) {
