@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo/components/splashscreen.dart';
 import 'package:flutter_todo/constants.dart';
 import 'package:flutter_todo/models.dart';
-import 'package:flutter_todo/pages/home_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -31,9 +31,10 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.amber,
         shadowColor: Colors.grey,
-        scaffoldBackgroundColor: Colors.amber.shade200
+        scaffoldBackgroundColor: Colors.black,
+        splashColor: Colors.black
       ),
-      home: const HomePage()
+      home: const SplashScreen()
     );
   }
 }

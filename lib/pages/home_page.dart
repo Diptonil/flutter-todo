@@ -36,6 +36,12 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void deleteAllTasks() {
+    setState(() {
+      database.deleteAllTodos();
+    });
+  }
+
   void cancelSave() {
     return Navigator.of(context).pop();
   }
@@ -62,7 +68,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Appbar(database: database),
+      appBar: Appbar(deleteAllTasks: deleteAllTasks),
       body: ListView.builder(
         itemCount: database.data.length,
         itemBuilder: (content, index) {
@@ -76,7 +82,8 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: createTask,
-        child: const Icon(Icons.add)
+        splashColor: Theme.of(context).primaryColor,
+        child: const Icon(Icons.add),
       ),
     );
   }

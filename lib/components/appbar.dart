@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_todo/services/database.dart';
+// import 'package:flutter_todo/services/database.dart';
+// import 'package:flutter_todo/pages/home_page.dart';
 
 
 class Appbar extends StatefulWidget implements PreferredSizeWidget {
-  final Database database;
+  final VoidCallback deleteAllTasks;
 
-  const Appbar({super.key, required this.database});
+  const Appbar({super.key, required this.deleteAllTasks});
 
   @override
   State<Appbar> createState() => _AppbarState();
@@ -19,11 +20,7 @@ class _AppbarState extends State<Appbar> {
   void handleClick(String value) {
     switch (value) {
       case "Clear All":
-        setState(() {
-          widget.database.addListener(() {
-            widget.database.deleteAllTodos();
-          });
-        });
+        widget.deleteAllTasks();
         break;
       case "Close":
         SystemChannels.platform.invokeMethod('SystemNavigator.pop');
